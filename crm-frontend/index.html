@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKB. CRM-система</title>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/media.css">
+    <link rel="icon" href="favicon.svg">
+    <script defer src="main.js"></script>
+</head>
+<body>
+
+    <!-- Анимация загрузки -->
+    <svg class="spinner" viewBox="0 0 50 50">
+        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+    </svg>
+
+    <!-- Шапка -->
+    <header class="header">
+        <div class="container header__container flex">
+            <a href="#" class="header__logo">
+                <img src="./img/logo.svg" class="header__img" alt="SKB Logo">
+            </a>
+            <div id="search" class="header__search flex">
+                <input class="header__input" placeholder="Введите запрос поиска">
+                <div  class="header__toggle flex">
+                    <label class="switch">
+                        <input id="filterToggle" type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <p class="toggle-text">Режим фильтрации</p>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container main__container">
+            <h1 class="main__title">Клиенты</h1>
+            
+            <!-- Заголовки поля клиентов -->
+            <ul class="main__sort-list list-reset flex">
+                <li id="up" class="main__id sort-id item-margin sort-arrow">ID</li>
+                <li id="down" class="main__fio sort-fio item-margin sort-arrow">Фамилия Имя Отчество<span class="sort-dir">А-Я</span></li>
+                <li id="down" class="main__date sort-date item-margin sort-arrow">Дата и время создания</li>
+                <li id="down" class="main__edit sort-edit item-margin sort-arrow">Последние изменения</li>
+                <li class="main__contact sort-contact item-margin">Контакты</li>
+                <li class="main__actions sort-actions item-margin">Действия</li>
+            </ul>
+
+            <!-- Поле клиентов -->
+            <div class="main__clients-field"></div>
+
+            <!-- Строка клиента -->
+            <ul id="client" class="main__client-list list-reset flex">
+                <li class="main__id  item-margin">
+                    <a class="client-id" href="#"></a>
+                </li>
+                <li class="main__fio client-fio item-margin"></li>
+                <li class="main__date client-create item-margin">
+                    <span class="main__client-create-date">21.02.2022</span>
+                    <span class="main__client-create-time">12:41</span>
+                </li>
+                <li class="main__edit client-dateEdit item-margin">
+                    <span class="main__client-edit-date">21.02.2022</span>
+                    <span class="main__client-edit-time">14:50</span>
+                </li>
+                <li class="main__contact client-contacts item-margin flex"></li>
+                <li class="main__actions client-actions item-margin">
+                    <span class="main__client-edit actions-img">Изменить</span>
+                    <span class="main__client-delete actions-img">Удалить</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Кнопка добавить клиента -->
+        <button id="addClientButton" class="btn main__btn btn-state">
+            <svg class="btn-icon" width="23" height="16" viewBox="0 0 23 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.5 8C16.71 8 18.5 6.21 18.5 4C18.5 1.79 16.71 0 14.5 0C12.29 0 10.5 1.79 10.5 4C10.5 6.21 12.29 8 14.5 8ZM5.5 6V3H3.5V6H0.5V8H3.5V11H5.5V8H8.5V6H5.5ZM14.5 10C11.83 10 6.5 11.34 6.5 14V16H22.5V14C22.5 11.34 17.17 10 14.5 10Z"/>
+                </svg>                    
+            Добавить клиента
+        </button>
+
+
+    <!-- МОДАЛЬНЫЕ ОКНА -->
+    <!-- Добавить клиента -->
+    <div id="modalAdd" class="modal">
+        <h2 class="subtitle">Новый клиент</h2>
+        <svg class="btn btn-close btn-state" width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M22.2332 7.73333L21.2665 6.76666L14.4998 13.5334L7.73318 6.7667L6.76652 7.73336L13.5332 14.5L6.76654 21.2667L7.73321 22.2333L14.4998 15.4667L21.2665 22.2334L22.2332 21.2667L15.4665 14.5L22.2332 7.73333Z" fill="#B0B0B0"/>
+        </svg>                
+        <form class="form">
+            <div class="form__input-block flex">
+                <label class="placeinput flex">
+                    <input class="form__input form__input_data" type="text" name="surname" required>
+                    <span class="placeholder">Фамилия<span class="required" >*</span></span>
+                </label>
+                <label class="placeinput flex">
+                    <input class="form__input form__input_data" type="text" name="name" required>
+                    <span class="placeholder">Имя<span class="required" >*</span></span>
+                </label>
+                <input class="form__input form__input_data" type="text" name="lastName" placeholder="Отчество">
+            </div>
+            <div class="add-contact-wrapper flex">
+                <div class="add-contact flex">                      
+                    <button class="add-contact-text" >
+                        <svg class="add-contact-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.99998 3.66659C6.63331 3.66659 6.33331 3.96659 6.33331 4.33325V6.33325H4.33331C3.96665 6.33325 3.66665 6.63325 3.66665 6.99992C3.66665 7.36659 3.96665 7.66659 4.33331 7.66659H6.33331V9.66659C6.33331 10.0333 6.63331 10.3333 6.99998 10.3333C7.36665 10.3333 7.66665 10.0333 7.66665 9.66659V7.66659H9.66665C10.0333 7.66659 10.3333 7.36659 10.3333 6.99992C10.3333 6.63325 10.0333 6.33325 9.66665 6.33325H7.66665V4.33325C7.66665 3.96659 7.36665 3.66659 6.99998 3.66659ZM6.99998 0.333252C3.31998 0.333252 0.333313 3.31992 0.333313 6.99992C0.333313 10.6799 3.31998 13.6666 6.99998 13.6666C10.68 13.6666 13.6666 10.6799 13.6666 6.99992C13.6666 3.31992 10.68 0.333252 6.99998 0.333252ZM6.99998 12.3333C4.05998 12.3333 1.66665 9.93992 1.66665 6.99992C1.66665 4.05992 4.05998 1.66659 6.99998 1.66659C9.93998 1.66659 12.3333 4.05992 12.3333 6.99992C12.3333 9.93992 9.93998 12.3333 6.99998 12.3333Z" fill="#9873FF"/>
+                        </svg>
+                        Добавить контакт
+                    </button>
+                </div>
+                <ul id="addList" class="contact-list">
+                    <li id="addTel2" class="contact-item">Доп.телефон</li>
+                    <li id="addEmail" class="contact-item">Email</li>
+                    <li id="addVk" class="contact-item">Vk</li>
+                    <li id="addFacebook" class="contact-item">Facebook</li>
+                </ul>
+            </div>
+            <button class="btn ok-btn ok-btn-state">Сохранить</button>
+            <div class="cancel-wrapper">
+                <a href="#" class="cancel">Отмена</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Изменить клиента -->
+    <div id="modalEdit" class="modal">
+        <div class="subtitle-edit-block">
+            <h2 class="subtitle subtitle-edit">Изменить данные</h2>
+            <span class="edit-id">ID:</span>
+        </div>
+        <svg class="btn btn-close btn-state" width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M22.2332 7.73333L21.2665 6.76666L14.4998 13.5334L7.73318 6.7667L6.76652 7.73336L13.5332 14.5L6.76654 21.2667L7.73321 22.2333L14.4998 15.4667L21.2665 22.2334L22.2332 21.2667L15.4665 14.5L22.2332 7.73333Z" fill="#B0B0B0"/>
+        </svg>                
+        <form class="form">
+            <div class="edit-form">
+                <div class="edit-label">Фамилия<span class="required" >*</span></div>
+                <input class="form__input form__input_edit" type="text" name="surname" required>
+                <div class="edit-label">Имя<span class="required" >*</span></div>
+                <input class="form__input form__input_edit" type="text" name="name" required>
+                <div class="edit-label">Отчество</div>
+                <input class="form__input form__input_edit" type="text" name="lastName">
+            </div>
+
+            <div class="add-contact-wrapper flex">
+                <div class="add-contact flex">                      
+                    <a href="#" class="add-contact-text" >
+                        <svg class="edit-contact-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.99998 3.66659C6.63331 3.66659 6.33331 3.96659 6.33331 4.33325V6.33325H4.33331C3.96665 6.33325 3.66665 6.63325 3.66665 6.99992C3.66665 7.36659 3.96665 7.66659 4.33331 7.66659H6.33331V9.66659C6.33331 10.0333 6.63331 10.3333 6.99998 10.3333C7.36665 10.3333 7.66665 10.0333 7.66665 9.66659V7.66659H9.66665C10.0333 7.66659 10.3333 7.36659 10.3333 6.99992C10.3333 6.63325 10.0333 6.33325 9.66665 6.33325H7.66665V4.33325C7.66665 3.96659 7.36665 3.66659 6.99998 3.66659ZM6.99998 0.333252C3.31998 0.333252 0.333313 3.31992 0.333313 6.99992C0.333313 10.6799 3.31998 13.6666 6.99998 13.6666C10.68 13.6666 13.6666 10.6799 13.6666 6.99992C13.6666 3.31992 10.68 0.333252 6.99998 0.333252ZM6.99998 12.3333C4.05998 12.3333 1.66665 9.93992 1.66665 6.99992C1.66665 4.05992 4.05998 1.66659 6.99998 1.66659C9.93998 1.66659 12.3333 4.05992 12.3333 6.99992C12.3333 9.93992 9.93998 12.3333 6.99998 12.3333Z" fill="#9873FF"/>
+                        </svg>
+                        Добавить контакт
+                    </a>
+                </div>
+                <ul id="editList" class="contact-list">
+                    <li id="editTel2" class="contact-item">Доп.телефон</li>
+                    <li id="editEmail" class="contact-item">Email</li>
+                    <li id="editVk" class="contact-item">Vk</li>
+                    <li id="editFacebook" class="contact-item">Facebook</li>
+                </ul>
+            </div>
+            <button class="btn ok-btn ok-btn-state">Сохранить</button>
+            <div class="cancel-wrapper">
+                <a href="#" class="edit-delete">Удалить клиента</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Удалить клиента -->
+    <div id="modalDelete" class="modal modal-delete flex">
+        <h2 class="subtitle subtitle-delete">Удалить клиента</h2>
+        <svg class="btn btn-close btn-state" width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M22.2332 7.73333L21.2665 6.76666L14.4998 13.5334L7.73318 6.7667L6.76652 7.73336L13.5332 14.5L6.76654 21.2667L7.73321 22.2333L14.4998 15.4667L21.2665 22.2334L22.2332 21.2667L15.4665 14.5L22.2332 7.73333Z" fill="#B0B0B0"/>
+        </svg>
+        <span class="modal-delete__warning">Вы действительно хотите удалить данного клиента?</span>
+        <button class="btn ok-btn ok-btn-state">Удалить</button>
+        <a href="" onclick="return false" class="cancel">Отмена</a>
+    </div>
+    </main>
+    <div class="background"></div>
+</body>
+</html>
